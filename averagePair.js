@@ -1,26 +1,40 @@
-function averagePair(sortedArr, num) {
-  let counter = {};
-  let pairs = [];
+// BigO = O(n^2)
+function averagePair(sortedArr, avg) {
+  let result = [];
 
   for (let i = 0; i < sortedArr.length; i++) {
-    counter[sortedArr[i]] = 2 * num - sortedArr[i];
-  }
+    for (let j = i + 1; j < sortedArr.length; j++) {
+      if ((sortedArr[i] + sortedArr[j]) / 2 != avg) {
+        continue;
+      }
 
-  console.log(counter);
-
-  for (let j = 0; j < sortedArr.length; j++) {
-    if (!counter[counter[sortedArr[j]]]) {
-      continue;
-    }
-
-    if (counter[counter[sortedArr[j]]] === sortedArr[j]) {
-      pairs.push([sortedArr[j], counter[sortedArr[j]]]);
+      result.push([sortedArr[i], sortedArr[j]]);
     }
   }
 
-  console.log(pairs);
-
-  return pairs;
+  console.log(result);
 }
 
-averagePair([-11, 0, 1, 2, 3, 9, 14, 17, 21], 1.5);
+// BigO = O(n)
+function averagePair_Pointer(sortedArr, avg) {
+  let leftPointer = 0;
+  let rightPointer = sortedArr.length - 1;
+  let result = [];
+
+  while (rightPointer > leftPointer) {
+    if ((sortedArr[leftPointer] + sortedArr[rightPointer]) / 2 > avg) {
+      rightPointer--;
+    } else if ((sortedArr[leftPointer] + sortedArr[rightPointer]) / 2 < avg) {
+      leftPointer++;
+    } else {
+      // (sortedArr[leftPointer] + sortedArr[rightPointer]) / 2 === avg
+      result.push([sortedArr[leftPointer], sortedArr[rightPointer]]);
+      rightPointer--;
+      leftPointer++;
+    }
+  }
+
+  console.log(result);
+}
+
+averagePair_Pointer([-11, 0, 1, 2, 3, 9, 14, 17, 21], 1.5);
